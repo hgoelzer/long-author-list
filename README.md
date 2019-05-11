@@ -21,8 +21,9 @@ Selected lines and selected blocks can be rearranged by dragging, sorted by last
 'Save' will write the updated list to a file that can be reused later
 'Parse' will write formatted output that can be copy-pasted 
 
-### Input: lal_data.txt with one author per row and up to 5 affiliations
-"<First>;<Last>;<Group1>;<Group2>;<Group3>;<Group4>;<Group5>" 
+### Input: lal_data.txt 
+Semicolon separated with one author per row and up to 5 affiliations
+First;Last;Group1;Group2;Group3;Group4;Group5 
 
 Example: Heiko;Goelzer;IMAU,UU;ULB;nil;nil;nil
 
