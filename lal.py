@@ -1,9 +1,20 @@
 # LongAuthorList formatting tool
 # Heiko Goelzer (h.goelzer@uu.nl 2019)
 
-# Expect lal_data.txt with one author per row and up to 5 affiliations
-# <First>; <Last>; <Group1>; <Group2>; <Group3>; <Group4>; <Group5> 
-# Example: Heiko; Goelzer; IMAU,UU; ULB; nil; nil; nil
+# Usage: python3 lal.py 
+
+# Input: lal_data.txt with one author per row and up to 5 affiliations
+# <First>;<Last>;<Group1>;<Group2>;<Group3>;<Group4>;<Group5> 
+# Example: Heiko;Goelzer;IMAU,UU;ULB;nil;nil;nil
+# Use 'nil','nan','0' or '-' to fill unused affiliations 
+
+# Output: lal_inout.txt when saving the modified listing, can be used as
+#         input the next time
+# Parsed: lal_parsed.txt when parsed to insert in a manuscript
+
+# Selected lines and selected blocks can be rearranged by dragging, sorted by last name and deleted.
+# 'Save' will write the updated list to a file that can be reused later
+# 'Parse' will write formatted output that can be copy-pasted 
 
 import tkinter as tk;
 
@@ -145,14 +156,11 @@ class ReorderableListbox(tk.Listbox):
         dfout = pd.DataFrame()
         for item in temp_list:
             items = item.split(",")
-#            print(items[3])
             matchl = (df["LastName"].isin([items[0]]))
             matchf = (df["FirstName"].isin([items[1]]))
-#            print(df[matchi])
             dfout = dfout.append(df[matchf & matchl])
-        print(dfout)
         dfout.to_csv('lal_inout.txt', sep=';', header=None, index=None)
-        print("File written!")
+        print("File saved!")
 
     def parse(self,df):
         # save current list
@@ -167,41 +175,54 @@ class ReorderableListbox(tk.Listbox):
         # parse 
         first = dfout["FirstName"]
         last = dfout["LastName"]
-        grp1 = dfout["Group1"]
         grp = dfout[["Group1","Group2","Group3","Group4","Group5"]]
         unique_groups = []
         group_ids = []
         k = 0
-        # collect unique groups and indicies
+        # collect unique groups and indices
         for i in range(0,dfout.shape[0]):
-            #print(unique_groups, len(unique_groups))
-            if grp1.iloc[i] not in unique_groups:
-                #print(i,unique_groups)
-                unique_groups.append(grp1.iloc[i])
-                k = k + 1
-                group_ids.append(k)
-            else:
-                ix = unique_groups.index(grp1.iloc[i])
-                group_ids.append(ix)
+            groups = []
+            # loop through max 5 groups
+            for j in range(0,5):
+                # Exclude some common dummy place holders
+                if (grp.iloc[i,j] not in ['nil','nan','0','-']):
+                    if (grp.iloc[i,j] not in unique_groups):
+                        unique_groups.append(grp.iloc[i,j])
+                        k = k + 1
+                        groups.append(k)
+                    else:
+                        ix = unique_groups.index(grp.iloc[i,j])+1
+                        groups.append(ix)
+            # Add author group ids            
+            group_ids.append(groups)
 
+        #print(group_ids)
+        #print(unique_groups)
         # Compose text
         with open("lal_parsed.txt", "w") as text_file:
             # write out names
             for i in range(0,dfout.shape[0]): 
                 print(first.iloc[i].strip(), end =" ", file=text_file)
                 print(last.iloc[i].strip(), end ="", file=text_file)
-                print(str(group_ids[i]), end =" ", file=text_file)
-                print(",", end ="", file=text_file)
-            # between names and affiliations    
+                for j in range(0,len(group_ids[i])):
+                    if j < len(group_ids[i])-1:
+                        print(str(group_ids[i][j]), end =",", file=text_file)
+                    else:    
+                        print(str(group_ids[i][j]), end ="", file=text_file)
+                print(" ", end ="", file=text_file)
+                if (i < dfout.shape[0]-1):
+                    print(",", end ="", file=text_file)
+
+            # Add some space between names and affiliations    
             print("\n\n", file=text_file)
-            # write out affiliations
+            # Write out affiliations
             for i in range(0,len(unique_groups)): 
                 print("(", end ="", file=text_file)
-                print(str(group_ids[i]), end ="", file=text_file)
-                print(")", end ="", file=text_file)
-                #print(group_ids[i], len(unique_groups), unique_groups[group_ids[i]])
-                print(unique_groups[group_ids[i]], end ="\n", file=text_file)
-        print("\n File parsed!")
+                print(str(i+1), end ="", file=text_file)
+                print(")", end =" ", file=text_file)
+                print(unique_groups[i], end ="\n", file=text_file)
+
+        print("File parsed!")
         
         
 # Main program
@@ -249,6 +270,6 @@ parseb = tk.Button(root, text="Parse", height=2, command = lambda: listbox.parse
 parseb.pack(fill=tk.BOTH, expand=False)
 
 
-# Run the tk window
+# Run the main tool
 root.mainloop()
 
