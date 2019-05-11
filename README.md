@@ -1,5 +1,7 @@
 # Long Author List 
-# Heiko Goelzer 2019 (h.goelzer@uu.nl)
+Heiko Goelzer 2019 (h.goelzer@uu.nl)
+
+Tool to edit long author lists and parse resulting author names and affiliation listing 
 
 ## Run program
 python3 lal.py
