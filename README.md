@@ -9,7 +9,9 @@ Tool to edit long author lists and write formatted author names and affiliations
 python3 lal.py
 
 Selected lines and selected blocks can be rearranged by dragging, sorted by last name and deleted.
+
 'Save' will write the updated list to a file that can be reused later
+
 'Parse' will write formatted output that can be copy-pasted 
 
 ### Input: lal_data.txt 
