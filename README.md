@@ -28,3 +28,7 @@ When saving the modified listing, can be used as input the next time
 
 ### Parsed: lal_parsed.txt 
 When parsed to insert in a manuscript
+
+
+### Screen shot
+![Alt text](/images/lal_screen.png?raw=true "Screen shot")
