@@ -1,4 +1,4 @@
-# LongAuthorList formatting tool
+# Long Author List formatting tool
 # Heiko Goelzer (h.goelzer@uu.nl 2019)
 
 # Usage: python3 lal.py 
