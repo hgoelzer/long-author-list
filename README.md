@@ -30,5 +30,5 @@ When saving the modified listing, can be used as input the next time
 When parsed to insert in a manuscript
 
 
-### Screen shot
+## Screen shot
 ![Alt text](/images/lal_screen.png?raw=true "Screen shot")
