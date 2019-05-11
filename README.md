@@ -3,19 +3,10 @@ Heiko Goelzer 2019 (h.goelzer@uu.nl)
 
 Tool to edit long author lists and write formatted author names and affiliations
 
-## Run program
-python3 lal.py
-
-## original author list input file
-lal_data.txt
-
-## modified list output
-lal_inout.txt
-
-## modified list output
-lal_parsed.txt
-
 ## Usage
+
+### Run the program
+python3 lal.py
 
 Selected lines and selected blocks can be rearranged by dragging, sorted by last name and deleted.
 'Save' will write the updated list to a file that can be reused later
@@ -34,4 +25,3 @@ When saving the modified listing, can be used as input the next time
 
 ### Parsed: lal_parsed.txt 
 When parsed to insert in a manuscript
-
