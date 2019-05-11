@@ -16,6 +16,7 @@ Selected lines and selected blocks can be rearranged by dragging, sorted by last
 
 ### Input: lal_data.txt 
 Semicolon separated with one author per row and up to 5 affiliations
+
 First;Last;Group1;Group2;Group3;Group4;Group5 
 
 Example: Heiko;Goelzer;IMAU,UU;ULB;nil;nil;nil
