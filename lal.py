@@ -209,9 +209,10 @@ class ReorderableListbox(tk.Listbox):
                         print(str(group_ids[i][j]), end =",", file=text_file)
                     else:    
                         print(str(group_ids[i][j]), end ="", file=text_file)
-                print(" ", end ="", file=text_file)
+                #print(" ", end ="", file=text_file)
                 if (i < dfout.shape[0]-1):
-                    print(",", end ="", file=text_file)
+                    # comma and space before next name
+                    print(", ", end ="", file=text_file)
 
             # Add some space between names and affiliations    
             print("\n\n", file=text_file)
