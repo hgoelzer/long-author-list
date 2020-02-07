@@ -14,19 +14,19 @@ Selected lines and selected blocks can be rearranged by dragging, sorted by last
 
 'Parse' will write formatted output that can be copy-pasted 
 
-### Input: lal_data.txt 
+### Input: lal_data2.txt 
 Semicolon separated with one author per row and up to 5 affiliations
 
-First;Last;Group1;Group2;Group3;Group4;Group5 
+First;Last;Email;Group1;Group2;Group3;Group4;Group5 
 
-Example: Heiko;Goelzer;IMAU,UU;ULB;nil;nil;nil
+Example: Heiko;Goelzer;h.goelzer@uu.nl;IMAU,UU;ULB;nil;nil;nil
 
 Use 'nil','nan','0' or '-' to fill unused affiliations 
 
-### Output: lal_inout.txt 
+### Output: lal_inout2.txt 
 When saving the modified listing, can be used as input the next time
 
-### Parsed: lal_parsed.txt 
+### Parsed: lal_parsed_*.txt 
 When parsed to insert in a manuscript
 
 
