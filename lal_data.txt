@@ -1,12 +1,8 @@
-Heiko;Goelzer;IMAU,UU;Labo glaciol, ULB;nil;nil;nil
-Helene;Seroussi;JPL, USA;nil;nil;nil;nil
-Tony;Payne;BGC, Bristol, UK;nil;nil;nil;nil
-Sophie;Nowicki;NASA, USA;nil;nil;nil;nil
-Bill;Lipscomb;NCAR;nil;nil;nil;nil
-Jonathan;Gregory;HC;Uni Reading;nil;nil;nil
-Eric;Larour;JPL, USA;nil;nil;nil;nil
-Ayako;Abe-Ouchi;UT;nil;nil;nil;nil
-Andy;Shepherd;UA;nil;nil;nil;nil
-Gerhard;Krinner;LK;nil;nil;nil;nil
-Fred;Powlinski;PKD;Grand Land University;nil;nil;nil
-Viola;Lusovski;IMAU,UU;JPL, USA;nil;nil;nil
+Heiko;Goelzer;IMAU, UU;Labo glaciol, ULB;nil;nil;nil
+Brice;Noel;IMAU, UU;nil;nil;nil;nil
+Michiel;van den Broeke;IMAU, UU;nil;nil;nil;nil
+Roderik S. W.;van de Wal;IMAU, UU;ES,UU;nil;nil;nil
+Tamsin L.;Edwards;KC;nil;nil;nil;nil
+Jonathan M.;Gregory;HC;nil;nil;nil;nil
+William H.;Lipscomb;NCAR;nil;nil;nil;nil
+Xavier;Fettweis;ULG;nil;nil;nil;nil

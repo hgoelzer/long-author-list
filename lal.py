@@ -162,7 +162,7 @@ class ReorderableListbox(tk.Listbox):
         dfout.to_csv('lal_inout.txt', sep=';', header=None, index=None)
         print("File saved!")
 
-    def parse(self,df):
+    def parse_word(self,df):
         # save current list
         temp_list = list(self.get(0, tk.END))
         # create output df
@@ -172,7 +172,7 @@ class ReorderableListbox(tk.Listbox):
             matchl = (df["LastName"].isin([items[0]]))
             matchf = (df["FirstName"].isin([items[1]]))
             dfout = dfout.append(df[matchf & matchl])
-        # parse 
+        # parse
         first = dfout["FirstName"]
         last = dfout["LastName"]
         grp = dfout[["Group1","Group2","Group3","Group4","Group5"]]
@@ -199,9 +199,9 @@ class ReorderableListbox(tk.Listbox):
         #print(group_ids)
         #print(unique_groups)
         # Compose text
-        with open("lal_parsed.txt", "w") as text_file:
+        with open("lal_parsed_word.txt", "w") as text_file:
             # write out names
-            for i in range(0,dfout.shape[0]): 
+            for i in range(0,dfout.shape[0]):
                 print(first.iloc[i].strip(), end =" ", file=text_file)
                 print(last.iloc[i].strip(), end ="", file=text_file)
                 for j in range(0,len(group_ids[i])):
@@ -223,9 +223,70 @@ class ReorderableListbox(tk.Listbox):
                 print(")", end =" ", file=text_file)
                 print(unique_groups[i], end ="\n", file=text_file)
 
-        print("File parsed!")
-        
-        
+        print("File lal_parsed_word.txt written")
+
+    # Parse simple list of names
+    def parse_list(self,df):
+        # save current list
+        temp_list = list(self.get(0, tk.END))
+        # create output df
+        dfout = pd.DataFrame()
+        for item in temp_list:
+            items = item.split(",")
+            matchl = (df["LastName"].isin([items[0]]))
+            matchf = (df["FirstName"].isin([items[1]]))
+            dfout = dfout.append(df[matchf & matchl])
+        # parse
+        first = dfout["FirstName"]
+        last = dfout["LastName"]
+        #print(group_ids)
+        #print(unique_groups)
+        # Compose text
+        with open("lal_parsed_list.txt", "w") as text_file:
+            # write out names
+            for i in range(0,dfout.shape[0]):
+                print(first.iloc[i].strip(), end =" ", file=text_file)
+                print(last.iloc[i].strip(), end ="", file=text_file)
+                print("", file=text_file)
+
+        print("File lal_parsed_list.txt written!")
+
+    # Parse sorted list of names
+    def parse_sorted(self,df):
+        # save current list
+        temp_list = list(self.get(0, tk.END))
+        # sort all items alphabetically
+        temp_list.sort(key=str.lower)
+        # create output df
+        dfout = pd.DataFrame()
+        for item in temp_list:
+            items = item.split(",")
+            matchl = (df["LastName"].isin([items[0]]))
+            matchf = (df["FirstName"].isin([items[1]]))
+            dfout = dfout.append(df[matchf & matchl])
+        # parse
+        first = dfout["FirstName"]
+        last = dfout["LastName"]
+        #print(group_ids)
+        #print(unique_groups)
+        # Compose text
+        with open("lal_parsed_sorted.txt", "w") as text_file:
+            # write out names
+            for i in range(0,dfout.shape[0]):
+                print(first.iloc[i].strip(), end =" ", file=text_file)
+                print(last.iloc[i].strip(), end ="", file=text_file)
+                print("", file=text_file)
+
+        print("File lal_parsed_sorted.txt written!")
+
+    # Define what files should be parsed
+    def parse_all(self,df):
+        self.parse_word(df)
+        self.parse_list(df)
+        self.parse_sorted(df)
+        print("All files parsed!")
+
+
 # Main program
 import pandas as pd
 import numpy as np
@@ -266,8 +327,8 @@ sortb.pack(fill=tk.BOTH, expand=False)
 saveb = tk.Button(root, text="Save", height=2, command = lambda: listbox.save(df))
 saveb.pack(fill=tk.BOTH, expand=False)
 
-# Add a save button
-parseb = tk.Button(root, text="Parse", height=2, command = lambda: listbox.parse(df))
+# Add a parse button
+parseb = tk.Button(root, text="Parse", height=2, command = lambda: listbox.parse_all(df))
 parseb.pack(fill=tk.BOTH, expand=False)
 
 
