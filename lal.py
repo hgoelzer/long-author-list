@@ -1,14 +1,14 @@
 # Long Author List formatting tool
-# Heiko Goelzer (h.goelzer@uu.nl 2019)
+# Heiko Goelzer (h.goelzer@uu.nl 2020)
 
 # Usage: python3 lal.py 
 
-# Input: lal_data.txt with one author per row and up to 5 affiliations
-# <First>;<Last>;<Group1>;<Group2>;<Group3>;<Group4>;<Group5> 
-# Example: Heiko;Goelzer;IMAU,UU;ULB;nil;nil;nil
+# Input: lal_data2.txt with one author per row and up to 5 affiliations
+# <First>;<Last>;<Email>;<Group1>;<Group2>;<Group3>;<Group4>;<Group5> 
+# Example: Heiko;Goelzer;h.goelzer@uu.nl;IMAU,UU;ULB;nil;nil;nil
 # Use 'nil','nan','0' or '-' to fill unused affiliations 
 
-# Output: lal_inout.txt when saving the modified listing, can be used as
+# Output: lal_inout2.txt when saving the modified listing, can be used as
 #         input the next time
 # Parsed: lal_parsed.txt when parsed to insert in a manuscript
 
@@ -158,8 +158,9 @@ class ReorderableListbox(tk.Listbox):
             items = item.split(",")
             matchl = (df["LastName"].isin([items[0]]))
             matchf = (df["FirstName"].isin([items[1]]))
+            matche = (df["Email"].isin([items[2]]))
             dfout = dfout.append(df[matchf & matchl])
-        dfout.to_csv('lal_inout.txt', sep=';', header=None, index=None)
+        dfout.to_csv('lal_inout2.txt', sep=';', header=None, index=None)
         print("File saved!")
 
     def parse_word(self,df):
@@ -225,6 +226,73 @@ class ReorderableListbox(tk.Listbox):
 
         print("File lal_parsed_word.txt written")
 
+    # Parse tex \author and \affil
+    def parse_tex(self,df):
+        # save current list
+        temp_list = list(self.get(0, tk.END))
+        # create output df
+        dfout = pd.DataFrame()
+        for item in temp_list:
+            items = item.split(",")
+            matchl = (df["LastName"].isin([items[0]]))
+            matchf = (df["FirstName"].isin([items[1]]))
+            dfout = dfout.append(df[matchf & matchl])
+        # parse
+        first = dfout["FirstName"]
+        last = dfout["LastName"]
+        grp = dfout[["Group1","Group2","Group3","Group4","Group5"]]
+        unique_groups = []
+        group_ids = []
+        k = 0
+        # collect unique groups and indices
+        for i in range(0,dfout.shape[0]):
+            groups = []
+            # loop through max 5 groups
+            for j in range(0,5):
+                # Exclude some common dummy place holders
+                if (grp.iloc[i,j] not in ['nil','nan','0','-']):
+                    if (grp.iloc[i,j] not in unique_groups):
+                        unique_groups.append(grp.iloc[i,j])
+                        k = k + 1
+                        groups.append(k)
+                    else:
+                        ix = unique_groups.index(grp.iloc[i,j])+1
+                        groups.append(ix)
+            # Add author group ids            
+            group_ids.append(groups)
+
+        #print(group_ids)
+        #print(unique_groups)
+        # Compose text
+        with open("lal_parsed_tex.txt", "w") as text_file:
+            # write out names
+            for i in range(0,dfout.shape[0]):
+                print("\\Author[", end ="", file=text_file)
+                for j in range(0,len(group_ids[i])):
+                    if j < len(group_ids[i])-1:
+                        print(str(group_ids[i][j]), end =",", file=text_file)
+                    else:    
+                        print(str(group_ids[i][j]), end ="]", file=text_file)
+
+                print("{", end ="", file=text_file)
+                print(first.iloc[i].strip(), end ="", file=text_file)
+                print("}{", end ="", file=text_file)
+                print(last.iloc[i].strip(), end ="", file=text_file)
+                print("}", end ="\n", file=text_file)
+
+            # Add some space between names and affiliations    
+            print("\n", file=text_file)
+            # Write out affiliations
+            for i in range(0,len(unique_groups)): 
+                print("\\affil", end ="", file=text_file)
+                print("[", end ="", file=text_file)
+                print(str(i+1), end ="", file=text_file)
+                print("]", end ="", file=text_file)
+                print("{", end ="", file=text_file)
+                print(unique_groups[i], end ="}\n", file=text_file)
+
+        print("File lal_parsed_tex.txt written")
+
     # Parse simple list of names
     def parse_list(self,df):
         # save current list
@@ -250,6 +318,36 @@ class ReorderableListbox(tk.Listbox):
                 print("", file=text_file)
 
         print("File lal_parsed_list.txt written!")
+
+    # Parse list of names and emails
+    def parse_email(self,df):
+        # save current list
+        temp_list = list(self.get(0, tk.END))
+        # create output df
+        dfout = pd.DataFrame()
+        for item in temp_list:
+            items = item.split(",")
+            matchl = (df["LastName"].isin([items[0]]))
+            matchf = (df["FirstName"].isin([items[1]]))
+            dfout = dfout.append(df[matchf & matchl])
+        # parse
+        first = dfout["FirstName"]
+        last = dfout["LastName"]
+        email = dfout["Email"]
+        #print(group_ids)
+        #print(unique_groups)
+        # Compose text
+        with open("lal_parsed_email.txt", "w") as text_file:
+            # write out names
+            for i in range(0,dfout.shape[0]):
+                print(first.iloc[i].strip(), end =" ", file=text_file)
+                print(last.iloc[i].strip(), end =" ", file=text_file)
+                print("<", end ="", file=text_file)
+                print(email.iloc[i].strip(), end ="", file=text_file)
+                print(">", end ="", file=text_file)
+                print("", file=text_file)
+
+        print("File lal_parsed_email.txt written!")
 
     # Parse sorted list of names
     def parse_sorted(self,df):
@@ -282,7 +380,9 @@ class ReorderableListbox(tk.Listbox):
     # Define what files should be parsed
     def parse_all(self,df):
         self.parse_word(df)
+        self.parse_tex(df)
         self.parse_list(df)
+        self.parse_email(df)
         self.parse_sorted(df)
         print("All files parsed!")
 
@@ -293,7 +393,7 @@ import numpy as np
 
 # Read input data from file
 #df = pd.read_csv('test.csv', sep=',', low_memory=False, encoding='iso8859_15')
-df = pd.read_csv('lal_data.txt', sep=';', header=None ,names=np.array(['FirstName', 'LastName', 'Group1','Group2','Group3','Group4','Group5']))
+df = pd.read_csv('lal_data2.txt', sep=';', header=None ,names=np.array(['FirstName', 'LastName', 'Email', 'Group1','Group2','Group3','Group4','Group5']))
 #print(df)
 #print(df.size)
 #print(df.shape[0])
