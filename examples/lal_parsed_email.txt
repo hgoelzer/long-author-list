@@ -1,8 +1,8 @@
 Heiko Goelzer <h.goelzer@uu.nl>
-Brice Noel <name@lab.com>
-Michiel van den Broeke <name@lab.com>
-Roderik S. W. van de Wal <name@lab.com>
-Tamsin L. Edwards <name@lab.com>
-Jonathan M. Gregory <name@lab.com>
-William H. Lipscomb <name@lab.com>
-Xavier Fettweis <name@lab.com>
+Lucas Brown <name@lab.com>
+Efe Cash <name@lab.com>
+Taio Noel <name@lab.com>
+Alina Raymond <name@lab.com>
+Zacharias Schmitt <name@lab.com>
+Menna Valentine <name@lab.com>
+Harley Vinson <name@lab.com>

@@ -1,10 +1,9 @@
-Heiko Goelzer1,2, Brice Noel1, Michiel van den Broeke1, Roderik S. W. van de Wal1,3, Tamsin L. Edwards4, Jonathan M. Gregory5, William H. Lipscomb6, Xavier Fettweis7
+Heiko Goelzer1,2, Lucas Brown3, Efe Cash1, Taio Noel1, Alina Raymond4, Zacharias Schmitt5, Menna Valentine6, Harley Vinson1
 
 
 (1) IMAU, UU
 (2) Labo glaciol, ULB
-(3) ES,UU
-(4) KC
+(3) KC
+(4) ULG
 (5) HC
 (6) NCAR
-(7) ULG
